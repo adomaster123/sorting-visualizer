@@ -6,7 +6,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #696969;
+
 }
 html {
 }
@@ -17,7 +17,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.bar {
+/*.bar {
   animation: fadein .5s;
 }
 @keyframes fadein {
@@ -28,6 +28,7 @@ code {
     opacity: 1;
   }
 }
+*/
 #graph {
   background: white;
 }

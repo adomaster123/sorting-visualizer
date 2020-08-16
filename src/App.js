@@ -7,7 +7,9 @@ class App extends React.Component{
     this.state = {
       nextArrayItem: "",
       arrayToSort: [],
-      sortMethod: ""
+      sortMethod: "",
+      maxArraySize: 60,
+      selectedIndex: []
    }
    this.handleInput = this.handleInput.bind(this);
    this.handleAdd = this.handleAdd.bind(this);
@@ -16,11 +18,8 @@ class App extends React.Component{
    this.handleSelect = this.handleSelect.bind(this);
    this.handleRandomize = this.handleRandomize.bind(this);
   }
-  componentDidMount() {
-
-  }
   componentDidUpdate() {
-    console.log(this.state.arrayToSort);
+    
   }
   handleInput(event) {
     this.setState({
@@ -28,7 +27,7 @@ class App extends React.Component{
     })
   }
   handleAdd() {
-    if(this.state.arrayToSort.length < 9 && this.state.nextArrayItem !== null && this.state.nextArrayItem !== "" && this.state.nextArrayItem !== [] && parseInt(this.state.nextArrayItem , 10) <= 500 && parseInt(this.state.nextArrayItem , 10) >= 0) {
+    if(this.state.arrayToSort.length < this.state.maxArraySize && this.state.nextArrayItem !== null && this.state.nextArrayItem !== "" && this.state.nextArrayItem !== [] && parseInt(this.state.nextArrayItem , 10) <= 500 && parseInt(this.state.nextArrayItem , 10) >= 0) {
     this.setState({
       arrayToSort: [...this.state.arrayToSort, parseInt(this.state.nextArrayItem , 10)],
       nextArrayItem: null
@@ -39,21 +38,35 @@ class App extends React.Component{
     this.refs.arrayInput.value = "";
   } else if(this.state.nextArrayItem === "") {
     alert("Please input a number")
-  } else if(this.state.arrayToSort.length === 9) {
+  } else if(this.state.arrayToSort.length === this.state.maxArraySize) {
     alert("Max array size reached")
   }
   }
   handleReset() {
-    this.setState({
-      arrayToSort: []
-    })
+    this.setState({arrayToSort: []})
   }
   handleSort() {
-    if (this.state.sortMethod === "") {
-      alert("Please select a sorting algorithm.")
+    if (this.state.sortMethod === "" || this.state.arrayToSort.length <= 1) {
+      alert("Please select a sorting algorithm and/or add an array.")
     } else if (this.state.sortMethod === "Bubble Sort") {
-      this.setState({arrayToSort: this.state.arrayToSort.sort((a, b) => a - b)})
-    }
+      let array = this.state.arrayToSort
+      setInterval(() => {
+        let i  = 0;
+        // eslint-disable-next-line no-loop-func
+        setInterval(() => {
+          if (array[i] > array[i + 1]) {
+            let tmp = array[i];
+            array[i] = array[i + 1];
+            array[i + 1] = tmp;
+            this.setState({arrayToSort: array, selectedIndex: [this.state.selectedIndex , i + 1]})
+        }
+        i++;
+        }, 50)
+      } , 300 )
+      } else if (this.state.sortMethod === "Heap Sort") {
+
+      }
+      clearInterval();
   }
   handleSelect(event) {
     this.setState({
@@ -62,17 +75,15 @@ class App extends React.Component{
   }
   handleRandomize() {
     let array = this.state.arrayToSort;
-    for (let i = 0; i < 9; i++) {
+    this.setState({arrayToSort:[], selectedIndex: []})
+    for (let i = 0; i < this.state.maxArraySize; i++) {
       array[i] = Math.floor(Math.random() * 500)
     }
-    this.setState({
-      arrayToSort: array
-    })
+    this.setState({arrayToSort: array})
   }
   render() {
     const graphStyles = {
-      border: "1px solid black",
-      height: "80vh",
+      maxHeight: "80vh",
       position: "relative",
       display: "grid",
       gridTemplateRows: "auto",
@@ -80,7 +91,10 @@ class App extends React.Component{
     }
     const controlStyles = {
       background: "#696969",
-      height: "1fr",
+      height: "auto",
+      position: "absolute",
+      bottom: "0px",
+      width: "100vw"
     }
     const inputStyles = {
       width: "190px"
@@ -88,11 +102,11 @@ class App extends React.Component{
     return (
       <div className="App">
         <div id="graph" style={graphStyles}>
-        <Graph arrayToSort={this.state.arrayToSort}/>
+        <Graph selectedIndex={this.state.selectedIndex} arrayToSort={this.state.arrayToSort}/>
         </div>
         <div id="controlpanel" style={controlStyles}>
-        <select onChange={this.handleSelect}>
-          <option disabled selected>Select a Sorting Algorithm</option>
+        <select onChange={this.handleSelect} defaultValue="Select a Sorting Algorithm">
+          <option disabled>Select a Sorting Algorithm</option>
           <option>Bubble Sort</option>
           <option>Quick Sort</option>
           <option>Heap Sort</option>
@@ -102,7 +116,7 @@ class App extends React.Component{
         <button onClick={this.handleSort}>Sort</button>
         <button onClick={this.handleRandomize}>Randomize Array</button>
         <button onClick={this.handleReset}>Clear Array</button>
-        <h3>This is a handy dandy tool for visualizing sorting algorithms. Use the input field to build your own array or just randomize if you're feeling lazy. Then select a sorting algorithm, hit sort, and watch the magic happen.</h3>
+        <h3>Use the input field to build your own array or just randomize it if you're feeling lazy. Then select a sorting algorithm, hit sort, and watch the magic happen. You can randomize the array mid sort. Hit clear array after the sort has finished if you want to try another algorithm. Tell me about any bugs you encounter by sending a message on <a href="http://adoibori.com">my website</a>, and just reload the page as a temporary fix.</h3>
         </div>
       </div>
     );

@@ -2,19 +2,21 @@ import React from 'react'
 
 const Bar = (props) => {
     const barStyles = {
-        width: `10%`,
+        width: `1%`,
         height: `${props.number}px`,
-        background: "gray",
+        background: props.selectedIndex.includes(props.index) ? "red":"gray",
         border: "1px solid black",
         display: "inline-block",
-        alignItems: "center",
         position: "relative",
-        bottom: "0px",
+        top: "0px",
         textAlign: "center",
+    }
+    const numberStyles = {
+        fontSize: "6px"
     }
     return (
         <div className="bar" style={barStyles}>
-            <p>{props.number}</p>
+            <p style={numberStyles}>{props.number}</p>
         </div>
     )
 }
