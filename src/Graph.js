@@ -2,8 +2,14 @@ import React from 'react';
 import Bar from './Bar';
 
 const Graph = (props) => {
+    const graphStyles = {
+        display: "flex",
+        justifyContent: "center",
+        position: "relative",
+        width: "90vw",
+    }
     return (
-        <div>
+        <div style={graphStyles}>
             {props.arrayToSort.map(number => {
                 return (
                     <Bar key={1 + Math.random()} array={props.arrayToSort} index={props.arrayToSort.indexOf(number)} selectedIndex={props.selectedIndex} number={number}/>

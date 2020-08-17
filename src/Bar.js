@@ -4,19 +4,18 @@ const Bar = (props) => {
     const barStyles = {
         width: `1%`,
         height: `${props.number}px`,
-        background: props.number === props.array.splice().sort((a,b)=>a-b)[props.array.indexOf(props.number)] ? "green" : props.selectedIndex.includes(props.index) ? "red":"gray",
+        background: "gray",
         border: "1px solid black",
         display: "inline-block",
         position: "relative",
-        top: "0px",
+        bottom: "0px",
         textAlign: "center",
     }
-    const numberStyles = {
-        fontSize: "6px"
+    if (props.selectedIndex.includes(props.index)) {
+        barStyles.background = "red"
     }
     return (
         <div className="bar" style={barStyles}>
-            <p style={numberStyles}>{props.number}</p>
         </div>
     )
 }

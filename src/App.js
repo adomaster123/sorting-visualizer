@@ -5,39 +5,15 @@ class App extends React.Component{
   constructor(props) {
     super(props)
     this.state = {
-      nextArrayItem: "",
       arrayToSort: [],
       sortMethod: "",
-      maxArraySize: 60,
-      selectedIndex: []
+      maxArraySize: 100,
+      selectedIndex: [],
    }
-   this.handleInput = this.handleInput.bind(this);
-   this.handleAdd = this.handleAdd.bind(this);
    this.handleReset = this.handleReset.bind(this);
    this.handleSort = this.handleSort.bind(this);
    this.handleSelect = this.handleSelect.bind(this);
    this.handleRandomize = this.handleRandomize.bind(this);
-  }
-  handleInput(event) {
-    this.setState({
-      nextArrayItem: event.target.value
-    })
-  }
-  handleAdd() {
-    if(this.state.arrayToSort.length < this.state.maxArraySize && this.state.nextArrayItem !== null && this.state.nextArrayItem !== "" && this.state.nextArrayItem !== [] && parseInt(this.state.nextArrayItem , 10) <= 500 && parseInt(this.state.nextArrayItem , 10) >= 0) {
-    this.setState({
-      arrayToSort: [...this.state.arrayToSort, parseInt(this.state.nextArrayItem , 10)],
-      nextArrayItem: null
-    })
-    this.refs.arrayInput.value = "";
-  } else if(parseInt(this.state.nextArrayItem , 10) > 500 || parseInt(this.state.nextArrayItem , 10) < 0) {
-    alert("Please stay within the range 0-500.")
-    this.refs.arrayInput.value = "";
-  } else if(this.state.nextArrayItem === "") {
-    alert("Please input a number")
-  } else if(this.state.arrayToSort.length === this.state.maxArraySize) {
-    alert("Max array size reached")
-  }
   }
   handleReset() {
     this.setState({arrayToSort: []})
@@ -61,12 +37,12 @@ class App extends React.Component{
             let tmp = array[i];
             array[i] = array[i + 1];
             array[i + 1] = tmp;
-            this.setState({arrayToSort: array, selectedIndex: [this.state.selectedIndex , i + 1]})
+            this.setState({arrayToSort: array, selectedIndex: [ i, i + 1]})
         }
         i++;
-        }, 50)
+        }, 10)
       } , 300 ) 
-      }
+    }
   }
   handleSelect(event) {
     this.setState({
@@ -91,9 +67,9 @@ class App extends React.Component{
     const graphStyles = {
       maxHeight: "80vh",
       position: "relative",
-      display: "grid",
-      gridTemplateRows: "auto",
-      gridTemplateColumns: "auto"
+      bottom: "0",
+      display: "flex",
+      justifyContent: "center"
     }
     const controlStyles = {
       background: "#696969",
@@ -102,25 +78,25 @@ class App extends React.Component{
       bottom: "0px",
       width: "100vw"
     }
-    const inputStyles = {
-      width: "190px"
+    const textStyles = {
+      fontSize: "13px",
+      padding: "0px",
+      margin: "0px"
     }
     return (
       <div className="App">
-        <div id="graph" style={graphStyles}>
+        <div  id="graph" style={graphStyles}>
         <Graph selectedIndex={this.state.selectedIndex} arrayToSort={this.state.arrayToSort}/>
         </div>
         <div id="controlpanel" style={controlStyles}>
         <select onChange={this.handleSelect} defaultValue="Select a Sorting Algorithm">
           <option disabled>Select a Sorting Algorithm</option>
           <option>Bubble Sort</option>
-        </select> <br></br>
-        <input style={inputStyles} placeholder="Input a number from 0 to 500" ref="arrayInput" type="number" onChange={this.handleInput} value={this.state.nextArrayItem}></input>
-        <button onClick={this.handleAdd}>Add To Array</button>
+        </select>
         <button onClick={this.handleSort}>Sort</button>
         <button onClick={this.handleRandomize}>Randomize Array</button>
         <button onClick={this.handleReset}>Clear Array</button>
-        <h4>Use the input field to build your own array or just randomize it if you're feeling lazy. Then select a sorting algorithm, hit sort, and watch the magic happen. Tell me about any bugs you encounter by sending a message on <a href="http://adoibori.com">my website</a>, and just reload the page as a temporary fix. I'll add more algorithms when I understand them better.</h4>
+        <p style={textStyles}>Create a random array. Then select a sorting algorithm, hit sort, and watch the magic happen. Tell me about any bugs you encounter by sending a message on <a rel="noopener noreferrer" target="_blank" href="http://adoibori.com/#contact">my website</a>, and just reload the page as a temporary fix. I'll add more algorithms when I understand them better.</p>
         </div>
       </div>
     );
