@@ -8,8 +8,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
 }
-html {
-}
 * {
   transition: all .5s ease;
 }

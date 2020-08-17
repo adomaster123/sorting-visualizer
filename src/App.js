@@ -17,35 +17,6 @@ class App extends React.Component{
    this.handleSort = this.handleSort.bind(this);
    this.handleSelect = this.handleSelect.bind(this);
    this.handleRandomize = this.handleRandomize.bind(this);
-   this.quickSort = this.quickSort.bind(this);
-  }
-  componentDidMount() {
-  }
-  quickSort(list) {
-    if (list.length <= 1) { 
-        return list
-    } else {
-        const left = []
-        const right = []
-        const sorted = []
-        const pivot = list.pop() // we're picking the last item to act as the pivot
-        const length = list.length
-        let i = 0
-        setInterval(() => {
-          if (i === length) {
-            for (let i=0; i<100000; i++) {
-              window.clearInterval(i);
-              }  
-          }
-          if (list[i] <= pivot) {
-            left.push(list[i])
-        } else {
-            right.push(list[i])
-        }
-          i++;
-        }, 100)
-        return sorted.concat(this.quickSort(left), pivot, this.quickSort(right))
-    }
   }
   handleInput(event) {
     this.setState({
@@ -95,10 +66,6 @@ class App extends React.Component{
         i++;
         }, 50)
       } , 300 ) 
-      } else if (this.state.sortMethod === "Quick Sort") {
-          this.setState({
-            arrayToSort: this.quickSort(this.state.arrayToSort)
-          })
       }
   }
   handleSelect(event) {
@@ -147,15 +114,13 @@ class App extends React.Component{
         <select onChange={this.handleSelect} defaultValue="Select a Sorting Algorithm">
           <option disabled>Select a Sorting Algorithm</option>
           <option>Bubble Sort</option>
-          <option>Quick Sort</option>
-          <option>Heap Sort</option>
         </select> <br></br>
         <input style={inputStyles} placeholder="Input a number from 0 to 500" ref="arrayInput" type="number" onChange={this.handleInput} value={this.state.nextArrayItem}></input>
         <button onClick={this.handleAdd}>Add To Array</button>
         <button onClick={this.handleSort}>Sort</button>
         <button onClick={this.handleRandomize}>Randomize Array</button>
         <button onClick={this.handleReset}>Clear Array</button>
-        <h4>Use the input field to build your own array or just randomize it if you're feeling lazy. Then select a sorting algorithm, hit sort, and watch the magic happen. Tell me about any bugs you encounter by sending a message on <a href="http://adoibori.com">my website</a>, and just reload the page as a temporary fix.</h4>
+        <h4>Use the input field to build your own array or just randomize it if you're feeling lazy. Then select a sorting algorithm, hit sort, and watch the magic happen. Tell me about any bugs you encounter by sending a message on <a href="http://adoibori.com">my website</a>, and just reload the page as a temporary fix. I'll add more algorithms when I understand them better.</h4>
         </div>
       </div>
     );
