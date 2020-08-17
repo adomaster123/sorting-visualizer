@@ -4,7 +4,7 @@ const Bar = (props) => {
     const barStyles = {
         width: `1%`,
         height: `${props.number}px`,
-        background: props.selectedIndex.includes(props.index) ? "red":"gray",
+        background: props.number === props.array.splice().sort((a,b)=>a-b)[props.array.indexOf(props.number)] ? "green" : props.selectedIndex.includes(props.index) ? "red":"gray",
         border: "1px solid black",
         display: "inline-block",
         position: "relative",
