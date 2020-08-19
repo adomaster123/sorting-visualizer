@@ -26,7 +26,7 @@ class App extends React.Component{
       alert("Please select a sorting algorithm")
     } else if (this.state.sortMethod === "Bubble Sort") {
       let array = this.state.arrayToSort
-      var run = setInterval(() => {
+      setInterval(() => {
         let i  = 0;
         // eslint-disable-next-line no-loop-func
         setInterval(() => {
@@ -38,18 +38,9 @@ class App extends React.Component{
         }
         i++;
         }, 10)
-      } , 200 ) 
+      } , 250 ) 
     } else if (this.state.sortMethod === "Insertion Sort") {
-      let array = this.state.arrayToSort;
-      let i = 0;
-      setInterval(() => {
-        let tmpind = array[i]
-        let j = 0;
-        setInterval(() => {
-          
-        }, 10)
-        i++;
-      }, 10)
+
     } else if (this.state.sortMethod === "Bogo Sort (The slow kid)") {
       let array = this.state.arrayToSort
         var bogo = setInterval (() => {

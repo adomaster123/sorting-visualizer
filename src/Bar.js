@@ -14,6 +14,9 @@ const Bar = (props) => {
     if (props.selectedIndex.includes(props.index)) {
         barStyles.background = "red"
     }
+    if (JSON.stringify(props.array) === JSON.stringify(props.array.slice().sort((a, b) => a - b))) {
+        barStyles.background = "green"
+    }
     return (
         <div className="bar" style={barStyles}>
         </div>
