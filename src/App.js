@@ -23,14 +23,11 @@ class App extends React.Component{
   }
   handleSort() {
     if (this.state.sortMethod === "" || this.state.arrayToSort.length <= 1) {
-      alert("Please select a sorting algorithm and/or add an array.")
+      alert("Please select a sorting algorithm")
     } else if (this.state.sortMethod === "Bubble Sort") {
       let array = this.state.arrayToSort
       var run = setInterval(() => {
         let i  = 0;
-        if (this.state.arrayToSort === this.state.arrayToSort.slice().sort((a,b) => a-b)) {
-          clearInterval(run)
-        }
         // eslint-disable-next-line no-loop-func
         setInterval(() => {
           if (array[i] > array[i + 1]) {
@@ -41,7 +38,34 @@ class App extends React.Component{
         }
         i++;
         }, 10)
-      } , 300 ) 
+      } , 200 ) 
+    } else if (this.state.sortMethod === "Insertion Sort") {
+      let array = this.state.arrayToSort;
+      let i = 0;
+      setInterval(() => {
+        let tmpind = array[i]
+        let j = 0;
+        setInterval(() => {
+          
+        }, 10)
+        i++;
+      }, 10)
+    } else if (this.state.sortMethod === "Bogo Sort (The slow kid)") {
+      let array = this.state.arrayToSort
+        var bogo = setInterval (() => {
+          for (let i = 0; i < this.state.maxArraySize; i++) {
+            let tmp = array[i]
+            let rnd = Math.floor(Math.random() * this.state.maxArraySize)
+            array[i] = array[rnd];
+            array[rnd] = tmp;
+          }
+          this.setState({
+              arrayToSort: array
+          })
+          if (array === array.slice().sort((a, b) => a - b)) {
+            clearInterval(bogo)
+          }
+        }, 50)
     }
   }
   handleSelect(event) {
@@ -79,7 +103,7 @@ class App extends React.Component{
       width: "100vw"
     }
     const textStyles = {
-      fontSize: "13px",
+      fontSize: "15px",
       padding: "0px",
       margin: "0px"
     }
@@ -92,6 +116,7 @@ class App extends React.Component{
         <select onChange={this.handleSelect} defaultValue="Select a Sorting Algorithm">
           <option disabled>Select a Sorting Algorithm</option>
           <option>Bubble Sort</option>
+          <option>Bogo Sort (The slow kid)</option>
         </select>
         <button onClick={this.handleSort}>Sort</button>
         <button onClick={this.handleRandomize}>Randomize Array</button>
