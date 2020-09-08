@@ -4,7 +4,7 @@ const Bar = (props) => {
     const barStyles = {
         width: `1%`,
         height: `${props.number}px`,
-        background: "gray",
+        background: "lightblue",
         border: "1px solid black",
         display: "inline-block",
         position: "relative",
@@ -14,7 +14,7 @@ const Bar = (props) => {
     if (props.selectedIndex.includes(props.index)) {
         barStyles.background = "red"
     }
-    if (JSON.stringify(props.array) === JSON.stringify(props.array.slice().sort((a, b) => a - b))) {
+    if (props.sortedIndex.includes(props.index)) {
         barStyles.background = "green"
     }
     return (
