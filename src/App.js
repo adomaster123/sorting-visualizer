@@ -10,13 +10,30 @@ class App extends React.Component{
       maxArraySize: 100,
       selectedIndex: [],
       sortedIndex: [],
+      sortSpeed: 204
    }
    this.handleReset = this.handleReset.bind(this);
    this.handleSort = this.handleSort.bind(this);
    this.handleSelect = this.handleSelect.bind(this);
    this.handleRandomize = this.handleRandomize.bind(this);
+   this.handleSize = this.handleSize.bind(this);
+   this.handleSpeed = this.handleSpeed.bind(this);
   }
   componentDidMount() {
+    this.handleRandomize()
+  }
+  handleSpeed(event) {
+    this.setState({
+      sortSpeed: event.target.value
+    })
+    for (let i=0; i<100000; i++) {
+      window.clearInterval(i);
+    }
+  }
+  handleSize(event) {
+    this.setState({
+      maxArraySize: event.target.value
+    })
     this.handleRandomize()
   }
   handleReset() {
@@ -56,7 +73,7 @@ class App extends React.Component{
           }))
         }
         i++
-      }, 5)
+      }, 205 - this.state.sortSpeed)
     } else if (this.state.sortMethod === "Insertion Sort") {
       let array = this.state.arrayToSort;
       let arraySorted = array.slice().sort((a,b) => a-b)
@@ -82,23 +99,30 @@ class App extends React.Component{
           }))
         }
         i--
-      }, 5)
-    } else if (this.state.sortMethod === "Bogo Sort (The slow kid)") {
+      }, 205 - this.state.sortSpeed)
+    } else if (this.state.sortMethod === "Bogo Sort") {
+      let isSorted = (array) => {
+          for (let i = 0; i < array.length; i++) {
+            if (array[i] > array[i + 1]) {
+              return false
+            }
+          }
+          return true
+        }
       let array = this.state.arrayToSort
-        var bogo = setInterval (() => {
-          for (let i = 0; i < this.state.maxArraySize; i++) {
-            let tmp = array[i]
-            let rnd = Math.floor(Math.random() * this.state.maxArraySize)
-            array[i] = array[rnd];
-            array[rnd] = tmp;
-          }
-          this.setState({
-              arrayToSort: array
-          })
-          if (array === array.slice().sort((a, b) => a - b)) {
-            clearInterval(bogo)
-          }
-        }, 50)
+      let arraySorted = array.sort((a,b) => a-b)
+      let bogo = setInterval(() => {
+        for (let j = array.length - 1; j > 0; j--) {
+          let rand = Math.floor(Math.random() * (j + 1))
+          let tmp = array[j]
+          array[j] = array[rand]
+          array[rand] = tmp
+        }
+        this.setState({arrayToSort: array})
+        if (isSorted(array)) {
+          window.clearInterval(bogo)
+        }
+      }, 205 - this.state.sortSpeed)
     } else if (this.state.sortMethod === "Gnome Sort") {
       let array = this.state.arrayToSort
       let sortedArray = array.slice().sort((a,b) => a - b)
@@ -124,9 +148,15 @@ class App extends React.Component{
               back = false
             }
           }
-        }, 5)
+        }, 205 - this.state.sortSpeed)
       }
       gnomeSort(array)
+    } else if (this.state.sortMethod === "Quick Sort") {
+      let array = this.state.arrayToSort
+      let sortedArray = array.slice().sort((a,b) => a- b)
+      let quickSort = (array) => {
+
+      }
     }
   }
   handleSelect(event) {
@@ -182,11 +212,15 @@ class App extends React.Component{
           <option>Bubble Sort</option>
           <option>Insertion Sort</option>
           <option>Gnome Sort</option>
-          <option>Bogo Sort (The slow kid)</option>
+          <option>Bogo Sort</option>
         </select>
         <button onClick={this.handleSort}>Sort</button>
         <button onClick={this.handleRandomize}>Randomize Array</button>
         <button onClick={this.handleReset}>Clear Array</button>
+        <label>Array Size</label>
+        <input type="range" min="5" max="150" value={this.state.maxArraySize} onChange={this.handleSize}/>
+        <label>Sorting Speed</label>
+        <input type="range" min="5" max="204" value={this.state.sortSpeed} onChange={this.handleSpeed}/>
         <p style={textStyles}>Randomize the array. Then select a sorting algorithm, hit sort, and watch the magic happen. <a target="_blank" rel="noopener noreferrer" href="https://en.wikipedia.org/wiki/Sorting_algorithm">More info on sorting algorithms here.</a> </p>
         </div>
       </div>
