@@ -151,12 +151,6 @@ class App extends React.Component{
         }, 205 - this.state.sortSpeed)
       }
       gnomeSort(array)
-    } else if (this.state.sortMethod === "Quick Sort") {
-      let array = this.state.arrayToSort
-      let sortedArray = array.slice().sort((a,b) => a- b)
-      let quickSort = (array) => {
-
-      }
     }
   }
   handleSelect(event) {
@@ -212,6 +206,7 @@ class App extends React.Component{
           <option>Bubble Sort</option>
           <option>Insertion Sort</option>
           <option>Gnome Sort</option>
+          <option>Merge Sort</option>
           <option>Bogo Sort</option>
         </select>
         <button onClick={this.handleSort}>Sort</button>
