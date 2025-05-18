@@ -100,7 +100,7 @@ class App extends React.Component{
         }
         i--
       }, 205 - this.state.sortSpeed)
-    } else if (this.state.sortMethod === "Bogo Sort") {
+    } else if (this.state.sortMethod === "Bogo Sort (Google it)") {
       let isSorted = (array) => {
           for (let i = 0; i < array.length; i++) {
             if (array[i] > array[i + 1]) {
@@ -151,6 +151,67 @@ class App extends React.Component{
         }, 205 - this.state.sortSpeed)
       }
       gnomeSort(array)
+    } else if (this.state.sortMethod === "Merge Sort") {
+      let array = this.state.arrayToSort
+      let sortedArray = array.slice().sort((a,b) => a- b)
+      let frames = []
+      frames.push([array.slice(), []])
+
+      let arrayRange = (start, stop, step) =>
+        Array.from(
+        { length: (stop - start) / step + 1 },
+        (value, index) => start + index * step
+        );
+
+      let merge = (ll, lr, rl, rr, arr) => {
+        let merged = []
+
+        let i = ll, j = rl
+
+        while (i <= lr && j <= rr) {
+          if (arr[i] < arr[j]) {
+            merged.push(arr[i++])
+          } else {
+            merged.push(arr[j++])
+          }
+        }
+
+        while (i <= lr) merged.push(arr[i++])
+        while (j <= rr) merged.push(arr[j++])
+  
+        for (i = ll, j = 0; i <= rr; ++i, ++j) {
+          arr[i] = merged[j]
+          
+          frames.push([arr.slice(), arrayRange(ll, i, 1)])
+        }
+      }
+
+      let mergeSort = (l, r, arr) => {
+        if (l >= r) {
+          return [l, r]
+        }
+
+        let mid = l + Math.floor((r - l) / 2)
+
+        merge(...mergeSort(l, mid, arr), ...mergeSort(mid + 1, r, arr), arr)
+
+        return [l, r]
+      }
+
+      mergeSort(0, array.length - 1, array)
+
+      let i = 0
+
+      let intervalId = setInterval(() => {
+        if (i >= frames.length) window.clearInterval(intervalId)
+        if (i < frames.length) {
+          this.setState({arrayToSort: frames[i][0], selectedIndex: frames[i][1]})
+          let sortedIndex = []
+          for (let j = 0; j < this.state.arrayToSort.length; ++j) if (this.state.arrayToSort[j] === sortedArray[j]) sortedIndex.push(j)
+          this.setState({sortedIndex: sortedIndex})
+        }
+        ++i
+      }, 205 - this.state.sortSpeed)
     }
   }
   handleSelect(event) {
@@ -207,7 +268,7 @@ class App extends React.Component{
           <option>Insertion Sort</option>
           <option>Gnome Sort</option>
           <option>Merge Sort</option>
-          <option>Bogo Sort</option>
+          <option>Bogo Sort (Google it)</option>
         </select>
         <button onClick={this.handleSort}>Sort</button>
         <button onClick={this.handleRandomize}>Randomize Array</button>
